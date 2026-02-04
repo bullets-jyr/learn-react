@@ -1,21 +1,7 @@
 import { useState } from "react";
-import { useTodos, useTodosDispatch } from "../../context/TodoContext";
 
-export default function AddTodo() {
+export default function AddTodo({ onAddTodo }) {
     const [todoText, setTodoText] = useState('');
-
-    const todos = useTodos();
-    const dispatch = useTodosDispatch();
-
-    // 1] added
-    const handleAddTodo = (text) => {
-        dispatch({
-            type: 'added',
-            nextId: todos.length,
-            todoText: text
-        })
-    }
-
     return (
         <div>
             <input
@@ -24,14 +10,14 @@ export default function AddTodo() {
                 onChange={(e) => setTodoText(e.target.value)}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' && e.nativeEvent.isComposing === false) {
-                        handleAddTodo(e.target.value);
+                        onAddTodo(e.target.value);
                         setTodoText('');
                     }
                 }}
             />
             <button onClick={() => {
                 setTodoText('');
-                handleAddTodo(todoText);
+                onAddTodo(todoText);
             }}>추가</button>
         </div>
     )
