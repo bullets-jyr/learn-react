@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export default function AddTodo({ onAddTodo }) {
     const [todoText, setTodoText] = useState('');
+
     return (
         <div>
             <input

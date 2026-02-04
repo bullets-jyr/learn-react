@@ -1,5 +1,4 @@
-import { useState, memo, useCallback, useMemo } from 'react';
-
+import { useState, memo, useMemo, useCallback } from "react";
 // 메모이제이션이 적용되지 않은 컴포넌트
 const RegularComponent = ({ count, items = [], onCount }) => {
     console.log('RegularComponent 렌더링');
@@ -42,8 +41,8 @@ export default function AppMemo() {
     ]);
 
     const beginnerCourses = useMemo(() => {
-        return courses.filter((item) => item.level === 0)
-    }, [courses]);
+        return courses.filter((course) => course.level === 0);
+    }, [courses])
 
     const handleCount = useCallback(() => setCount(count + 1), [count]);
 
@@ -53,16 +52,8 @@ export default function AppMemo() {
             <button onClick={() => setCount(count + 1)}>카운트 증가</button>
             <button onClick={() => setOtherState(otherState + 1)}>기타 상태 변경</button>
             <hr />
-            <RegularComponent
-                count={count}
-                items={beginnerCourses}
-                onCount={handleCount}
-            />
-            <MemoizedComponent
-                count={count}
-                items={beginnerCourses}
-                onCount={handleCount}
-            />
+            <RegularComponent count={count} items={beginnerCourses} onCount={handleCount} />
+            <MemoizedComponent count={count} items={beginnerCourses} onCount={handleCount} />
         </div>
-    );
-};
+    )
+}

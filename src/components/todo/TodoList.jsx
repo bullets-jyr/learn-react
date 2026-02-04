@@ -1,8 +1,7 @@
 import TodoItem from "./TodoItem";
-import { useTodos } from "../../context/TodoContext";
 import { useMemo, useState } from "react";
-export default function TodoList() {
-    const todos = useTodos();
+export default function TodoList({ todos, onToggleTodo, onDeleteTodo }) {
+    console.log('✅ TodoList 컴포넌트 렌더링!')
 
     const [isDone, setIsDone] = useState(false);
     const getFilteredTodos = () => {
@@ -37,7 +36,11 @@ export default function TodoList() {
             <ul>
                 {filteredTodos.map(item =>
                     <li key={item.id}>
-                        <TodoItem item={item} />
+                        <TodoItem
+                            item={item}
+                            onToggleTodo={onToggleTodo}
+                            onDeleteTodo={onDeleteTodo}
+                        />
                     </li>
                 )}
             </ul>
