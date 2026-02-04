@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { forwardRef, useEffect, useRef, useState } from "react"
 
 // let counter = 0;
 
@@ -21,10 +21,10 @@ function ButtonCounter() {
     )
 }
 
-function Form() {
+const MyForm = forwardRef((props, ref) => {
     const [form, setForm] = useState({
         title: '제목',
-        author: '',
+        author: '짐코딩',
         content: ''
     });
 
@@ -73,8 +73,30 @@ function Form() {
         }
     }, []);
 
+    const [isChanged, setIsChanged] = useState(false);
+    const prevForm = useRef(null);
+
+    useEffect(() => {
+        // server api fetch
+        prevForm.current = { ...form };
+
+        console.log('formRef: ', formRef)
+    }, []);
+
+    useEffect(() => {
+
+        const hasChanged = (
+            prevForm.current.title !== form.title ||
+            prevForm.current.content !== form.content ||
+            prevForm.current.author !== form.author
+        );
+
+        setIsChanged(hasChanged);
+    }, [form])
+
+    const formRef = useRef(null);
     return (
-        <form onSubmit={handleSubmit}>
+        <form ref={ref} onSubmit={handleSubmit}>
             <fieldset>
                 <legend>글쓰기</legend>
                 <input ref={titleInputRef} name="title" placeholder="제목" value={form.title} onChange={handleForm} />
@@ -83,13 +105,19 @@ function Form() {
                 <hr />
                 <textarea ref={contentTextareaRef} name="content" placeholder="내용" value={form.content} onChange={handleForm} />
                 <hr />
-                <button>전송</button>
+                <button disabled={!isChanged}>전송</button>
             </fieldset>
         </form>
     )
-}
+})
 
 export default function AppRef() {
+
+    const myFormRef = useRef(null);
+
+    useEffect(() => {
+        console.log('myFormRef: ', myFormRef);
+    }, []);
 
     return (
         <>
@@ -97,7 +125,7 @@ export default function AppRef() {
             <ButtonCounter />
             <ButtonCounter />
             <h2>Form</h2>
-            <Form />
+            <MyForm ref={myFormRef} />
         </>
     )
 }
