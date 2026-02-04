@@ -1,38 +1,19 @@
-import { useState } from "react";
-import { useTodos, useTodosDispatch } from "../../context/TodoContext";
+// import './App.css'
 
-export default function AddTodo() {
-    const [todoText, setTodoText] = useState('');
+import TodoList from './components/todo/TodoList';
+import AddTodo from './components/todo/AddTodo';
 
-    const todos = useTodos();
-    const dispatch = useTodosDispatch();
+import { TodoProvider } from './context/TodoContext';
 
-    // 1] added
-    const handleAddTodo = (text) => {
-        dispatch({
-            type: 'added',
-            nextId: todos.length,
-            todoText: text
-        })
-    }
+function AppTodo() {
 
     return (
-        <div>
-            <input
-                type="text"
-                value={todoText}
-                onChange={(e) => setTodoText(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter' && e.nativeEvent.isComposing === false) {
-                        handleAddTodo(e.target.value);
-                        setTodoText('');
-                    }
-                }}
-            />
-            <button onClick={() => {
-                setTodoText('');
-                handleAddTodo(todoText);
-            }}>추가</button>
-        </div>
-    )
+        <TodoProvider>
+            <h2>할일목록</h2>
+            <AddTodo />
+            <TodoList />
+        </TodoProvider>
+    );
 }
+
+export default AppTodo;
